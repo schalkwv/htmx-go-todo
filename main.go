@@ -27,5 +27,6 @@ func main() {
 	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.Get("/", handleGetTasks)
 	r.Post("/tasks", handleCreateTask)
+	r.Put("/tasks/{id}/toggle", handleToggleTask)
 	http.ListenAndServe(":3000", r)
 }
