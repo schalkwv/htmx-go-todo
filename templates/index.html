@@ -11,7 +11,7 @@
 <body>
 <div class="max-w-screen-md mx-auto mt-8">
     <div class="flex justify-between items-center">
-        {{ template "TotalCount" dict "Count" .Count }}
+        {{ template "TotalCount" dict "Count" .Count "SwapOOB" false }}
         {{ template "CompletedCount" dict "Count" .CompletedCount }}
     </div>
     {{ template "Form" }}

@@ -1,5 +1,5 @@
 {{ define "Form" }}
-<form>
+<form hx-post="/tasks" hx-swap="outerHTML">
     <input
             id="title"
             name="title"

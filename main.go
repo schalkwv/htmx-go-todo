@@ -26,5 +26,6 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 	r.Get("/", handleGetTasks)
+	r.Post("/tasks", handleCreateTask)
 	http.ListenAndServe(":3000", r)
 }
