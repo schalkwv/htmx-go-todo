@@ -121,3 +121,48 @@ func handleEditTask(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl.ExecuteTemplate(w, "Item", map[string]any{"Item": item, "SwapOOB": true, "Editing": true})
 }
+
+func handleUpdateTask(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		log.Printf("error parsing id into int %v", err)
+		return
+	}
+	title := r.FormValue("title")
+	if title == "" {
+		tmpl.ExecuteTemplate(w, "Form", nil)
+		return
+	}
+	item, err := updateTask(id, title)
+	if err != nil {
+		log.Printf("error updating task %v", err)
+		return
+	}
+	tmpl.ExecuteTemplate(w, "Item", map[string]any{"Item": item, "SwapOOB": true})
+}
+
+func handleOrderTasks(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Printf("error parsing form %v", err)
+		return
+	}
+	var values []int
+	for k, v := range r.Form {
+		if k == "item" {
+			for _, value := range v {
+				intValue, err := strconv.Atoi(value)
+				if err != nil {
+					log.Printf("error parsing value into int %v", err)
+					return
+				}
+				values = append(values, intValue)
+			}
+		}
+	}
+	err = orderTasks(r.Context(), values)
+	if err != nil {
+		log.Printf("error ordering tasks %v", err)
+		return
+	}
+}
